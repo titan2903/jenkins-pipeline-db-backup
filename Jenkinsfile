@@ -1,11 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        label 'sandbox'
+    }
     environment {
         MARIADB_SSH_KEY = credentials('mariadb-ssh-key')
         GCP_SERVICE_ACCOUNT = credentials('gcp-service-account-storage')
         WEBHOOK = credentials('WEBHOOK_URL_DISCORD')
         BACKUP_DIR = "/home/titan/backup-db"
     }
+
     stages {
         stage('Backup Database') {
             steps {
@@ -28,6 +31,7 @@ pipeline {
             }
         }
     }
+
     post {
         success {
             echo "Post Success"
